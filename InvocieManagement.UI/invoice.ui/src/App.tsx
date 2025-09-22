@@ -7,9 +7,9 @@ export default function App() {
     <div className="container">
       <header className="header">
         <h1>Invoice Management</h1>
-        <nav>
-          <Link to="/invoices">Invoices</Link>
-          <Link to="/invoices/new">New Invoice</Link>
+        <nav className="nav">
+          <Link to="/invoices" className="nav-link">Invoices</Link>
+          <Link to="/invoices/new" className="nav-link nav-link-primary">New Invoice</Link>
         </nav>
       </header>
       <Routes>
