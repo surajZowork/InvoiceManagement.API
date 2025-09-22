@@ -11,5 +11,14 @@ namespace InvoiceManagement.DAL.Interface
     {
         Task<IEnumerable<Invoice>> GetAllWithLines();
         Task<Invoice?> GetByIdWithLines(int id);
+        Task<(IReadOnlyList<Invoice> Items, int TotalCount)> GetPagedWithLinesAsync(
+            int pageNumber,
+            int pageSize,
+            string? sortBy,
+            bool desc,
+            string? customerName,
+            DateTime? startDate,
+            DateTime? endDate
+            );
     }
 }

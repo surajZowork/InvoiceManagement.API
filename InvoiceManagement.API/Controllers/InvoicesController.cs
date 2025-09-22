@@ -25,10 +25,22 @@ namespace InvoiceManagement.API.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        // GET /api/invoices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InvoiceReadDto>>> GetAll()
-        { 
-          return Ok(await _service.GetAll());
+        public async Task<ActionResult<PagedResult<InvoiceReadDto>>> GetAll(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] string? sortDir = "desc",
+            [FromQuery] string? customerName = null,
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null)
+        {
+            var result = await _service.GetPaged(
+                pageNumber, pageSize, sortBy, sortDir, customerName, startDate, endDate);
+
+            return Ok(result);
         }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<InvoiceReadDto>> GetById(int id)

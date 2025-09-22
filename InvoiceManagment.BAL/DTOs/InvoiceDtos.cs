@@ -18,5 +18,8 @@ namespace InvoiceManagement.BAL.DTOs
 
 
         public record InvoiceReadDto(int Id, string CustomerName, DateTime InvoiceDate, decimal TotalAmount, List<InvoiceLineReadDto> Lines);
+      
+        public record PagedResult<T>(IReadOnlyList<T> Items, int PageNumber, int PageSize, int TotalCount, int TotalPages);
+
     }
 }
