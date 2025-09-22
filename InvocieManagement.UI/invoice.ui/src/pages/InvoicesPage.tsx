@@ -1,48 +1,32 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { getInvoices } from '../api'
 import type { InvoiceRead } from '../types/invoiceTypes'
-import InlineInvoiceForm from '../shared/InlineInvoiceForm'
 
 export default function InvoicesPage() {
   const [customerName, setCustomerName] = useState('')
-  const [startDate, setStartDate] = useState('')
+  const [startDate, setStartDate] = useState('') // yyyy-mm-dd
   const [endDate, setEndDate] = useState('')
   const [sortBy, setSortBy] = useState<'id' | 'customerName' | 'invoiceDate' | 'totalAmount'>('invoiceDate')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
-  const [items, setItems] = useState<InvoiceRead[]>([])
-  const [totalPages, setTotalPages] = useState(0)
-  const [totalCount, setTotalCount] = useState(0)
+  const [data, setData] = useState<{ items: InvoiceRead[]; totalPages: number; totalCount: number }>({ items: [], totalPages: 0, totalCount: 0 })
   const [loading, setLoading] = useState(false)
-  const [err, setErr] = useState<string | null>(null)
 
-  const query = useMemo(() => ({
-    pageNumber,
-    pageSize,
-    sortBy,
-    sortDir,
-    customerName: customerName || null,
-    startDate: startDate || null,
-    endDate: endDate || null,
-  }), [pageNumber, pageSize, sortBy, sortDir, customerName, startDate, endDate])
+  const query = useMemo(() => ({ customerName: customerName || null, startDate: startDate || null, endDate: endDate || null, sortBy, sortDir, pageNumber, pageSize }), [customerName, startDate, endDate, sortBy, sortDir, pageNumber, pageSize])
 
   useEffect(() => {
     (async () => {
-      setLoading(true); setErr(null)
+      setLoading(true)
       try {
         const res = await getInvoices(query)
-        setItems(res.items)
-        setTotalPages(res.totalPages)
-        setTotalCount(res.totalCount)
-      } catch (e: any) {
-        setErr(e?.message || 'Failed to load invoices')
+        setData({ items: res.items, totalPages: res.totalPages, totalCount: res.totalCount })
       } finally {
         setLoading(false)
       }
     })()
-  }, [query])
+  }, [query.pageNumber, query.pageSize, query.sortBy, query.sortDir, query.customerName, query.startDate, query.endDate])
 
   return (
     <div className="stack">
@@ -73,9 +57,8 @@ export default function InvoicesPage() {
 
       <section className="card">
         <h2>Invoices</h2>
-        {err && <p className="error">{err}</p>}
-        {loading ? <p>Loading…</p> : items.length === 0 ? <p>No results.</p> : (
-          <table className="table">
+        {loading ? <p>Loading…</p> : data.items.length === 0 ? <p>No results.</p> : (
+            <table className="table">
             <thead>
               <tr>
                 <th>#</th>
@@ -85,7 +68,7 @@ export default function InvoicesPage() {
               </tr>
             </thead>
             <tbody>
-              {items.map(inv => (
+              {data.items.map(inv => (
                 <React.Fragment key={inv.id}>
                   <tr>
                     <td>{inv.id}</td>
@@ -123,16 +106,10 @@ export default function InvoicesPage() {
           </table>
         )}
         <div className="pager">
-          <div>Found {totalCount}</div>
           <button disabled={pageNumber <= 1} onClick={() => setPageNumber(p => p - 1)}>Prev</button>
-          <span>Page {pageNumber} / {Math.max(1, totalPages)}</span>
-          <button disabled={pageNumber >= totalPages} onClick={() => setPageNumber(p => p + 1)}>Next</button>
+          <span>Page {pageNumber} / {Math.max(1, data.totalPages)}</span>
+          <button disabled={pageNumber >= data.totalPages} onClick={() => setPageNumber(p => p + 1)}>Next</button>
         </div>
-      </section>
-
-      <section className="card">
-        <h2>Quick add (Inline Invoice)</h2>
-        <InlineInvoiceForm onCreated={() => { setPageNumber(1) }} />
       </section>
     </div>
   )

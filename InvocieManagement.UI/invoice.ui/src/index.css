@@ -3,14 +3,15 @@ body { margin: 0; background: #f7f7fb; }
 .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
 .header { display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .header nav { display:flex; gap:12px; }
-.card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-bottom: 16px; }
+.card { background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); margin-bottom: 16px; max-height: 500px; overflow-y: auto; }
 .stack { display:flex; flex-direction:column; gap:12px; }
 .row { display:flex; gap:8px; align-items:center; flex-wrap: wrap; }
 .filters { display:grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap:8px; align-items:center; }
 input, select, button { padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; background:white; }
 button { background:#222; color:white; cursor:pointer; }
 button[disabled] { opacity:.6; cursor:not-allowed; }
-.table { width:100%; border-collapse: collapse; }
+.table { width: 100%; border-collapse: collapse; }
+.table-wrapper { overflow-x: auto; max-height: 400px; overflow-y: auto; border: 1px solid #eee; }
 .table th, .table td { border-bottom:1px solid #eee; padding:8px; text-align:left; }
 .table .inner { width:100%; border-collapse: collapse; }
 .table .inner th, .table .inner td { border-bottom:1px dashed #eee; padding:6px; }
