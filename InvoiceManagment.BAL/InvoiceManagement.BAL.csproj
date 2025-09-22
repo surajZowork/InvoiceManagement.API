@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InvoiceManagement.DAL\InvoiceManagement.DAL.csproj" />
+    <ProjectReference Include="..\InvoiceManagement.Entities\InvoiceManagement.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

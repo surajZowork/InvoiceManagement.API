@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InvoiceManagement.DAL\InvoiceManagement.DAL.csproj" />
+    <ProjectReference Include="..\InvoiceManagement.Entities\InvoiceManagement.Entities.csproj" />
+    <ProjectReference Include="..\InvoiceManagment.BAL\InvoiceManagement.BAL.csproj" />
+  </ItemGroup>
+
 </Project>
