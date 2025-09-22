@@ -13,6 +13,19 @@ export default function InvoicesPage() {
 
   const [data, setData] = useState<{ items: InvoiceRead[]; totalPages: number; totalCount: number }>({ items: [], totalPages: 0, totalCount: 0 })
   const [loading, setLoading] = useState(false)
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set())
+
+  const toggleRowExpansion = (invoiceId: number) => {
+    setExpandedRows(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(invoiceId)) {
+        newSet.delete(invoiceId)
+      } else {
+        newSet.add(invoiceId)
+      }
+      return newSet
+    })
+  }
 
   const query = useMemo(() => ({ customerName: customerName || null, startDate: startDate || null, endDate: endDate || null, sortBy, sortDir, pageNumber, pageSize }), [customerName, startDate, endDate, sortBy, sortDir, pageNumber, pageSize])
 
@@ -70,36 +83,41 @@ export default function InvoicesPage() {
             <tbody>
               {data.items.map(inv => (
                 <React.Fragment key={inv.id}>
-                  <tr>
-                    <td>{inv.id}</td>
+                  <tr className="expandable" onClick={() => toggleRowExpansion(inv.id)}>
+                    <td>
+                      <span className="expand-icon">{expandedRows.has(inv.id) ? '▼' : '▶'}</span>
+                      {inv.id}
+                    </td>
                     <td>{inv.customerName}</td>
                     <td>{new Date(inv.invoiceDate).toLocaleDateString()}</td>
                     <td>{inv.totalAmount.toFixed(2)}</td>
                   </tr>
-                  <tr>
-                    <td colSpan={4}>
-                      <table className="inner">
-                        <thead>
-                          <tr>
-                            <th>Description</th>
-                            <th>Qty</th>
-                            <th>Unit</th>
-                            <th>Line Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {inv.lines.map(line => (
-                            <tr key={line.id}>
-                              <td>{line.description}</td>
-                              <td>{line.quantity}</td>
-                              <td>{line.unitPrice.toFixed(2)}</td>
-                              <td>{line.lineTotal.toFixed(2)}</td>
+                  {expandedRows.has(inv.id) && (
+                    <tr>
+                      <td colSpan={4}>
+                        <table className="inner">
+                          <thead>
+                            <tr>
+                              <th>Description</th>
+                              <th>Qty</th>
+                              <th>Unit</th>
+                              <th>Line Total</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
+                          </thead>
+                          <tbody>
+                            {inv.lines.map(line => (
+                              <tr key={line.id}>
+                                <td>{line.description}</td>
+                                <td>{line.quantity}</td>
+                                <td>{line.unitPrice.toFixed(2)}</td>
+                                <td>{line.lineTotal.toFixed(2)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  )}
                 </React.Fragment>
               ))}
             </tbody>
