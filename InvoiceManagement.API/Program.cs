@@ -29,12 +29,18 @@ builder.Services.AddSwaggerGen();
 
 
 
-// CORS for local dev
-builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
-.WithOrigins("http://localhost:5173")
-.AllowAnyHeader()
-.AllowAnyMethod()));
-
+// 1) Add CORS
+const string ClientPolicy = "ClientPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(ClientPolicy, cors =>
+        cors.WithOrigins("http://localhost:5173") // Vite dev server
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    // add this only if you send cookies/authorization headers from the browser
+    //.AllowCredentials()
+    );
+});
 var app = builder.Build();
 
 // Auto-migrate
@@ -56,5 +62,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors(ClientPolicy);  // <-- important order
 
 app.Run();
