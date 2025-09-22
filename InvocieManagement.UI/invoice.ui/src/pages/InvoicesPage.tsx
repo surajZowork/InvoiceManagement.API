@@ -52,7 +52,6 @@ export default function InvoicesPage() {
           <select value={sortBy} onChange={e => setSortBy(e.target.value as any)}>
             <option value="invoiceDate">Invoice Date</option>
             <option value="customerName">Customer</option>
-            <option value="totalAmount">Total</option>
             <option value="id">Id</option>
           </select>
           <select value={sortDir} onChange={e => setSortDir(e.target.value as any)}>

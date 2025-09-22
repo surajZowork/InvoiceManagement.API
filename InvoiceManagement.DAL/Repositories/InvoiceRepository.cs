@@ -89,7 +89,6 @@ namespace InvoiceManagement.DAL.Repositories
             {
                 "customername" => desc ? query.OrderByDescending(i => i.CustomerName) : query.OrderBy(i => i.CustomerName),
                 "invoicedate" => desc ? query.OrderByDescending(i => i.InvoiceDate) : query.OrderBy(i => i.InvoiceDate),
-                "totalamount" => desc ? query.OrderByDescending(i => i.TotalAmount) : query.OrderBy(i => i.TotalAmount),
                 _ => desc ? query.OrderByDescending(i => i.Id) : query.OrderBy(i => i.Id)
             };
 
