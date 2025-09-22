@@ -20,17 +20,21 @@ namespace InvoiceManagement.API.Controllers
                 var created = await _service.Create(dto);
                 return Created($"/api/invoices/{created.Id}", created);
             }
-            catch (ValidationException ex)
-            {
-               
-
-                return ValidationProblem(new ValidationProblemDetails(ex.Errors.ToArray()));
+            catch (Exception ex)
+            {              
+                return Problem(ex.Message);
             }
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InvoiceReadDto>>> GetAll()
         { 
           return Ok(await _service.GetAll());
+        }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<InvoiceReadDto>> GetById(int id)
+        {
+            var item = await _service.GetById(id);
+            return item is null ? NotFound() : Ok(item);
         }
 
     }

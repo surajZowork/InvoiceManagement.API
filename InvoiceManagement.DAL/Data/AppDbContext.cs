@@ -33,6 +33,7 @@ namespace InvoiceManagement.DAL.Data
                 e.HasKey(l => l.Id);
                 e.Property(l => l.Description).IsRequired().HasMaxLength(200);
                 e.Property(l => l.UnitPrice).HasColumnType("decimal(18,2)");
+
             });
         }
     }

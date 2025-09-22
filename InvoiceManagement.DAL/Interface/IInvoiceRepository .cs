@@ -10,5 +10,6 @@ namespace InvoiceManagement.DAL.Interface
     public interface IInvoiceRepository : IGenericRepository<Invoice>
     {
         Task<IEnumerable<Invoice>> GetAllWithLines();
+        Task<Invoice?> GetByIdWithLines(int id);
     }
 }

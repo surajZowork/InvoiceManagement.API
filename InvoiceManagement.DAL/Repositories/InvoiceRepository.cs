@@ -47,5 +47,11 @@ namespace InvoiceManagement.DAL.Repositories
                 .OrderByDescending(i => i.Id)
                 .ToListAsync();
         }
+        public async Task<Invoice?> GetByIdWithLines(int id)
+        {
+            return await _context.Invoices
+            .Include(i => i.InvoiceLines)
+            .FirstOrDefaultAsync(i => i.Id == id);
+        }
     }
 }

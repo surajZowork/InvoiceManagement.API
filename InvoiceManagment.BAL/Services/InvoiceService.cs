@@ -55,6 +55,11 @@ namespace InvoiceManagement.BAL.Services
             return items.Select(MapToReadDto);
         }
 
+        public async Task<InvoiceReadDto?> GetByIdAsync(int id)
+        {
+            var item = await _uow.Invoices.GetByIdWithLines(id);
+            return item is null ? null : MapToReadDto(item);
+        }
 
         private static InvoiceReadDto MapToReadDto(Invoice i)
         => new(

@@ -11,5 +11,6 @@ namespace InvoiceManagement.BAL.Interface
     {
         Task<InvoiceReadDto> Create(InvoiceCreateDto dto);
         Task<IEnumerable<InvoiceReadDto>> GetAll();
+        Task<InvoiceReadDto?> GetById(int id);
     }
 }
