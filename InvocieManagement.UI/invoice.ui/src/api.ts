@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { InvoiceCreate, InvoiceRead, PagedResult } from './types/invoiceTypes'
 
-const api = axios.create({ baseURL: 'http://localhost:5173/' }) // proxied to API
+const api = axios.create({ baseURL: '/' }) // proxied to API
 
 export async function createInvoice(payload: InvoiceCreate) {
   const res = await api.post<InvoiceRead>('/api/invoices', payload)
