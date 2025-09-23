@@ -12,12 +12,10 @@ namespace InvoiceManagement.DAL.Repositories
     {
         private readonly AppDbContext _context;
 
-        public IInvoiceRepository Invoices { get; }
 
         public UnitOfWork(AppDbContext context, IInvoiceRepository invoiceRepository)
         {
             _context = context;
-            Invoices = invoiceRepository;
         }
 
         public Task<int> SaveChanges() => _context.SaveChangesAsync();
